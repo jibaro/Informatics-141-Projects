@@ -1,0 +1,15 @@
+//Fernando de Paz
+//81962579
+//Assignment 2 ICS 121 
+One Big loop to go through all the Characters - 			  O(N)
+	For loop inside to get occurances - 			      M = O(N)
+	For loop to go in the range of Occurances 			  O(M)
+		For Loop to check if palindrome exists in list<Frequency> O(P)
+		Loop for validity of the palindrome			  O(Q)
+
+N = Length of the whole phrase from text
+M = Occurances in the N
+P = Depends on how many items are in list<Frequency>
+Q = Depends if length of the palindrome found
+
+O(N) * ((N + M) * (P + Q)) ~ O(N^2)
