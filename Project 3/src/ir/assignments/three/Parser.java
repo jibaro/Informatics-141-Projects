@@ -67,7 +67,7 @@ public class Parser extends WebCrawler{
                     HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
                     
                     String text = htmlParseData.getText();
-                    String filename = "ParseData"+ htmlParseData.getTitle() +".txt";
+                    String filename = "ParseData_"+ htmlParseData.getTitle() +".txt";
                     try {
                     	
 						PrintWriter out = new PrintWriter(filename);
@@ -98,7 +98,10 @@ public class Parser extends WebCrawler{
                     	}
                     	
                     }
-                    
+                    if(Crawler.Biggest_Page < text.length()){
+                    	Crawler.Biggest_Page = text.length();
+                    	Crawler.Biggest_Page_URL = url;
+                    }
                     System.out.println("Text length: " + text.length());
                     System.out.println("Html length: " + html.length());
                     System.out.println("Number of outgoing links: " + links.size());

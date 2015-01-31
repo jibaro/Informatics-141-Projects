@@ -8,12 +8,23 @@ import ir.assignments.three.Utilities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class WordFrequencyCounter {
 
 	private WordFrequencyCounter() {}
-
+	
+	public static ArrayList<String> UniqueStrings(List<Frequency> list){
+		ArrayList<String> Uniques = new ArrayList<String>();
+		for(Frequency x: list){
+			if(x.getFrequency() == 1){
+				Uniques.add(x.getText());
+			}
+		}
+		Collections.sort(Uniques);
+		return Uniques;
+	}
 	public static List<Frequency> computeWordFrequencies(List<String> words) {
 
 		List<Frequency> frequency = new ArrayList<Frequency>();
