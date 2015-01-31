@@ -3,6 +3,7 @@ package ir.assignments.three;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -17,13 +18,29 @@ public class Parser extends WebCrawler{
             + "|png|tiff?|mid|mp2|mp3|mp4"
             + "|wav|avi|mov|mpeg|ram|m4v|pdf" 
             + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
+    
+    // TODO: Might need to remove these global variables
+    
+    public ArrayList<String> urlSite = new ArrayList<String>();
+    List<Frequency> siteFrequencies;
+    int count=0;
+    
     @Override
     public boolean shouldVisit(WebURL url) {
             String href = url.getURL().toLowerCase();
             
-            // TODO: remove print
-            System.out.println("URL: " + href);
-            System.out.println(!FILTERS.matcher(href).matches() && href.startsWith("http://www.ics.uci.edu/"));
+            // TODO: add each url to list & .add() append the element return true;
+            urlSite.add(href);
+           
+            // TODO: only check the domain not subdomain & need to optimize it
+            
+            if(href.startsWith("http://www.ics.uci.edu/"))
+            {
+            	// TODO: Use WordFrequencyCounter to see uniqueness
+                siteFrequencies = WordFrequencyCounter.computeWordFrequencies(urlSite);
+                
+            }
+            
             return !FILTERS.matcher(href).matches() && href.startsWith("http://www.ics.uci.edu/");
     }
     @Override
@@ -54,10 +71,24 @@ public class Parser extends WebCrawler{
 					
                     String html = htmlParseData.getHtml();
                     List<WebURL> links = htmlParseData.getOutgoingUrls();
+              
+                    // TODO: Remove print statement & this is # of unique URL(s).
+                    System.out.println("The size of this array: " + siteFrequencies.size());
+                    for(int i=0; i<siteFrequencies.size(); i++)
+                    {
+                    	if(siteFrequencies.get(i).getFrequency() <= 1)
+                    	{
+                    		count++;
+                    	}
+                    	
+                    }
                     
                     System.out.println("Text length: " + text.length());
                     System.out.println("Html length: " + html.length());
                     System.out.println("Number of outgoing links: " + links.size());
+                    
+                    // TODO: Remove print statement
+                    System.out.println("Numbers of UNIQUE URL: " + count);
             }
     }
 }

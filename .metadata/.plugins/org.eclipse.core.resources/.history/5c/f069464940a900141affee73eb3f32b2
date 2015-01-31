@@ -1,0 +1,67 @@
+package ir.assignments.three;
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import com.sleepycat.je.txn.LockerFactory;
+
+import edu.uci.ics.crawler4j.crawler.*;
+import edu.uci.ics.crawler4j.fetcher.PageFetcher;
+import edu.uci.ics.crawler4j.parser.HtmlParseData;
+import edu.uci.ics.crawler4j.robotstxt.*;
+import edu.uci.ics.crawler4j.url.WebURL;
+
+
+public class Crawler {
+
+	
+	public static void main(String[] args) throws Exception{
+		String crawlStorageFolder = args[0];
+		int numofCrawlers = Integer.parseInt(args[1]);
+		
+		CrawlConfig config = new CrawlConfig();
+		
+		config.setCrawlStorageFolder(crawlStorageFolder);
+	    config.setPolitenessDelay(1000);
+	    config.setMaxDepthOfCrawling(2);
+	    config.setMaxPagesToFetch(3);
+	    config.setIncludeBinaryContentInCrawling(false);
+	    config.setResumableCrawling(false);
+	    
+	    // Implement our id: UCI Inf141-CS121 crawler StudentID(s)
+	    config.setUserAgentString("UCI Inf141-CS121 crawler 25475733");
+	    config.setUserAgentString("UCI Inf141-CS121 crawler 81962579");
+	    
+		PageFetcher pageFetcher = new PageFetcher(config);
+		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+        RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
+        CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+        
+        // There is an order start from ICS.UCI.EDU**
+        
+        controller.addSeed("http://www.ics.uci.edu/");
+        //controller.addSeed("http://www.ics.uci.edu/~welling/");
+        //controller.addSeed("http://www.ics.uci.edu/~lopes/");
+
+        
+        Date date1 = new Date();
+        SimpleDateFormat timeFormat1 = new SimpleDateFormat("h:mm:ss");
+        String time1 = timeFormat1.format(date1);
+        System.out.println(time1);
+        
+        
+        controller.start(Parser.class, numofCrawlers); 
+        
+        Date date2 = new Date();
+        SimpleDateFormat timeFormat2 = new SimpleDateFormat("h:mm:ss");
+        String time2 = timeFormat2.format(date2);
+        System.out.println(time2);
+        
+        // The times are in millisecond, so to convert it. To get seconds, divide it by 1000
+        long difference = (date2.getTime() - date1.getTime()) / 1000;
+        System.out.println("Total time in seconds: " + difference);
+        
+	}
+}
