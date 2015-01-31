@@ -48,11 +48,14 @@ public class Utilities {
 			builder.append(ch);
 		}
 		//Append characters to builder to make string
-		if(builder.length() > 0){
+		if(builder.length() > 1){
 				Tokens.add(builder.toString());
 		
 			
 			
+		}
+		else if(builder.toString() == "a" || builder.toString() == "i"){
+			Tokens.add(builder.toString());
 		}
 	}
 	public static String[] tokenizeURL(String string){

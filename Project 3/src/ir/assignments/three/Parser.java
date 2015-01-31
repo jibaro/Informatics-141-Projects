@@ -47,14 +47,12 @@ public class Parser extends WebCrawler{
     public void visit(Page page) {          
             String url = page.getWebURL().getURL();
             String subdomain = page.getWebURL().getSubDomain();
-            
+
             if(Crawler.Subdomain.containsKey(subdomain)){
-            	System.out.print("hi");
             	ArrayList<String> list = Crawler.Subdomain.get(subdomain);
             	list.add(url);
             }
             else{
-            	System.out.print("hello");
             	ArrayList<String> list = new ArrayList<String>();
             	list.add(url);
             	Crawler.Subdomain.put(subdomain, list);
@@ -69,7 +67,7 @@ public class Parser extends WebCrawler{
                     HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
                     
                     String text = htmlParseData.getText();
-                    String filename = "ParseData"+ htmlParseData.getTitle() +".txt";
+                    String filename = "ParseData_"+ htmlParseData.getTitle() +".txt";
                     try {
                     	
 						PrintWriter out = new PrintWriter(filename);
@@ -91,10 +89,6 @@ public class Parser extends WebCrawler{
                    
 
                     List<WebURL> links = htmlParseData.getOutgoingUrls();
-
-              
-                    // TODO: Remove print statement & this is # of unique URL(s).
-                    // check it out FERNANDO
                     System.out.println("The size of this array: " + siteFrequencies.size());
                     for(int i=0; i<siteFrequencies.size(); i++)
                     {
@@ -104,8 +98,10 @@ public class Parser extends WebCrawler{
                     	}
                     	
                     }
-
-                    
+                    if(Crawler.Biggest_Page < text.length()){
+                    	Crawler.Biggest_Page = text.length();
+                    	Crawler.Biggest_Page_URL = url;
+                    }
                     System.out.println("Text length: " + text.length());
                     System.out.println("Html length: " + html.length());
                     System.out.println("Number of outgoing links: " + links.size());
