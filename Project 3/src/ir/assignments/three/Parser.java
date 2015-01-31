@@ -20,6 +20,10 @@ public class Parser extends WebCrawler{
     @Override
     public boolean shouldVisit(WebURL url) {
             String href = url.getURL().toLowerCase();
+            
+            // TODO: remove print
+            System.out.println("URL: " + href);
+            System.out.println(!FILTERS.matcher(href).matches() && href.startsWith("http://www.ics.uci.edu/"));
             return !FILTERS.matcher(href).matches() && href.startsWith("http://www.ics.uci.edu/");
     }
     @Override

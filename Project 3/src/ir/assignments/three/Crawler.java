@@ -28,14 +28,20 @@ public class Crawler {
 	    config.setIncludeBinaryContentInCrawling(false);
 	    config.setResumableCrawling(false);
 	    
+	    // Implement our id: UCI Inf141-CS121 crawler StudentID(s)
+	    config.setUserAgentString("UCI Inf141-CS121 crawler 25475733");
+	    config.setUserAgentString("UCI Inf141-CS121 crawler FERNANDO'S id");
+	    
 		PageFetcher pageFetcher = new PageFetcher(config);
 		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
         
+        // There is an order start from ICS.UCI.EDU**
+        
+        controller.addSeed("http://www.ics.uci.edu/");
         controller.addSeed("http://www.ics.uci.edu/~welling/");
         controller.addSeed("http://www.ics.uci.edu/~lopes/");
-        controller.addSeed("http://www.ics.uci.edu/");
 
         controller.start(Parser.class, numofCrawlers); 
 	}
