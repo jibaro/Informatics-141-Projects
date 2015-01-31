@@ -92,6 +92,7 @@ public class Parser extends WebCrawler{
 
                     List<WebURL> links = htmlParseData.getOutgoingUrls();
 <<<<<<< HEAD
+<<<<<<< HEAD
               
                     // TODO: Remove print statement & this is # of unique URL(s).
                     // check it out FERNANDO
@@ -104,6 +105,8 @@ public class Parser extends WebCrawler{
                     	}
                     	
                     }
+=======
+>>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
                     
