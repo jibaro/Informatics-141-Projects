@@ -47,7 +47,7 @@ public class Parser extends WebCrawler{
     public void visit(Page page) {          
             String url = page.getWebURL().getURL();
             String subdomain = page.getWebURL().getSubDomain();
-
+            
             if(Crawler.Subdomain.containsKey(subdomain)){
             	System.out.print("hi");
             	ArrayList<String> list = Crawler.Subdomain.get(subdomain);
@@ -91,8 +91,7 @@ public class Parser extends WebCrawler{
                    
 
                     List<WebURL> links = htmlParseData.getOutgoingUrls();
-<<<<<<< HEAD
-<<<<<<< HEAD
+
               
                     // TODO: Remove print statement & this is # of unique URL(s).
                     // check it out FERNANDO
@@ -105,10 +104,7 @@ public class Parser extends WebCrawler{
                     	}
                     	
                     }
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
+
                     
                     System.out.println("Text length: " + text.length());
                     System.out.println("Html length: " + html.length());
