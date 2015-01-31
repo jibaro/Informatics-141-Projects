@@ -54,13 +54,11 @@ public class Crawler {
         
         controller.start(Parser.class, numofCrawlers); 
         
-        Date date2 = new Date();
         SimpleDateFormat timeFormat2 = new SimpleDateFormat("h:mm:ss");
-        String time2 = timeFormat2.format(date2);
+        String time2 = timeFormat2.format(date);
         System.out.println(time2);
         
-        long difference = (date2.getTime() - date1.getTime()) / 1000;
-        System.out.println("Total time in seconds: " + difference);
+        long difference = 
         
 	}
 }

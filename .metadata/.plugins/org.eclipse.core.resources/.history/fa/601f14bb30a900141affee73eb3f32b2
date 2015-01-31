@@ -59,8 +59,8 @@ public class Crawler {
         String time2 = timeFormat2.format(date2);
         System.out.println(time2);
         
-        long difference = (date2.getTime() - date1.getTime()) / 1000;
-        System.out.println("Total time in seconds: " + difference);
+        long difference = (date2.getTime() - date1.getTime()) / 1000.0;
+        System.out.println(difference);
         
 	}
 }

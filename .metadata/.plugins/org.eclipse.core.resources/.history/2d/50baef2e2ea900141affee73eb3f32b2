@@ -42,25 +42,15 @@ public class Crawler {
         // There is an order start from ICS.UCI.EDU**
         
         controller.addSeed("http://www.ics.uci.edu/");
-        //controller.addSeed("http://www.ics.uci.edu/~welling/");
-        //controller.addSeed("http://www.ics.uci.edu/~lopes/");
+        controller.addSeed("http://www.ics.uci.edu/~welling/");
+        controller.addSeed("http://www.ics.uci.edu/~lopes/");
 
         
-        Date date1 = new Date();
-        SimpleDateFormat timeFormat1 = new SimpleDateFormat("h:mm:ss");
-        String time1 = timeFormat1.format(date1);
-        System.out.println(time1);
+        Date date = new Date();
+        long time = date.getTime();
+        System.out.println(time)
         
         
         controller.start(Parser.class, numofCrawlers); 
-        
-        Date date2 = new Date();
-        SimpleDateFormat timeFormat2 = new SimpleDateFormat("h:mm:ss");
-        String time2 = timeFormat2.format(date2);
-        System.out.println(time2);
-        
-        long difference = (date2.getTime() - date1.getTime()) / 1000;
-        System.out.println("Total time in seconds: " + difference);
-        
 	}
 }

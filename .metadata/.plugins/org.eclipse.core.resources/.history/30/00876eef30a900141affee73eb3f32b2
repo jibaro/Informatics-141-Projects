@@ -60,7 +60,7 @@ public class Crawler {
         System.out.println(time2);
         
         long difference = (date2.getTime() - date1.getTime()) / 1000;
-        System.out.println("Total time in seconds: " + difference);
+        System.out.println(difference);
         
 	}
 }
