@@ -55,13 +55,6 @@ public class Utilities {
 			
 		}
 	}
-	public static String[] tokenizeURL(String string){
-		String delims = "[.]";
-		String[] splitted = string.split(delims);
-		return splitted;
-		
-
-	}
 	@SuppressWarnings("resource")
 	public static ArrayList<String> tokenizeFile(File input){
 		//Prepare to read 

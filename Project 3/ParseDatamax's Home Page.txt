@@ -1,0 +1,133 @@
+  
+                    
+                            
+                             SCIVI LAB -
+                                Statistical Computation, Information, Vision & Inference
+                             
+                             
+                          
+                            
+                                
+                              Research
+                              My
+                                      NSF Career Page
+                              People
+                              Publications
+                                Machine
+
+
+
+                                      Learning
+                              Publications
+
+
+
+                                    Physics 
+                              Classnotes
+                                Machine
+
+
+
+                                      Learning
+                              Teaching
+                              My
+
+
+
+                                      Blog
+                              Personal
+                                      Web-Pages
+                              Center
+
+
+
+                                      for Machine
+                                      Learning and Intelligent Systems
+                                      
+                                    iCamp!
+
+
+
+                                      (Ugrad Research)
+                                    
+                              
+                              
+                            
+                          
+                            
+                              
+                                
+                              
+                                  
+                                       
+                               
+                              Max Welling                                                                    
+                              Professor of
+
+
+
+                                      Computer Science and Statistics
+                                      Associate director of the Center
+                                      for Machine Learning and
+                                      Intelligent Systems
+                                    Associate
+
+
+
+                                      Editor in Chief IEEE-TPAMI                                                                    
+                              NOTE:
+                                      I have physically moved to
+                                      the University of Amsterdam (UvA)
+                                      I still run a lab at UCI
+                                      jointly with Prof. Babak Shahbaba
+                                      (statistics)
+                                    
+                              Donald
+
+
+
+                                      Bren School of Information and
+                                      Computer Science
+                                    Bren Hall 4028 
+                                       Information
+                                        and Computer
+                                        Science
+                                        University
+                                        of California,
+                                        Irvine
+                                          CA
+                                          92697-3425
+                                          USA
+                              Office
+                                      4028 in Bren Hall, UCI main campus
+                                      Phone: 949-824-8169
+                                      Fax:
+                                          949-824-4056
+                                    welling
+
+
+
+                                        [at]
+                                          ics [dot] uci [dot]
+                                          edu  
+                                
+                            
+                               
+                          
+                    
+                     This
+
+
+
+                        material is based upon work supported by the
+                        National Science Foundation under Grant
+
+
+
+                          No. 0447903. 
+                    and Grant No.
+                        0535278. Any opinions, findings and conclusions
+                        or recomendations expressed in this material are
+                        those of the author(s) and do not necessarily
+                        reflect the views of the National Science
+                        Foundation (NSF).
