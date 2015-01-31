@@ -106,7 +106,6 @@ public class Parser extends WebCrawler{
                     System.out.println("Html length: " + html.length());
                     System.out.println("Number of outgoing links: " + links.size());
                     System.out.println("Uniqueness of site: " + count);
-                    System.out.println("\n");
             }
     }
 }
