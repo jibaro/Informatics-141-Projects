@@ -76,3 +76,5 @@ Project 3/ParseDataabout us @ the bren school of information and computer scienc
 *.dat
 
 .metadata/.plugins/org.eclipse.core.resources/.history/a8/00a52fab2aab00141edade3f907945fc
+
+*.properties

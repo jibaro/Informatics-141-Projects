@@ -47,7 +47,7 @@ public class Crawler {
 		config.setCrawlStorageFolder(crawlStorageFolder);
 	    config.setPolitenessDelay(300);
 	    config.setMaxDepthOfCrawling(2);
-	    config.setMaxPagesToFetch(30);
+	    config.setMaxPagesToFetch(300);
 	    config.setIncludeBinaryContentInCrawling(false);
 	    config.setResumableCrawling(false);
 	    
@@ -58,18 +58,21 @@ public class Crawler {
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
         
+        String[] crawlerDomains = new String[] {"http://www.ics.uci.edu/"};
+        controller.setCustomData(crawlerDomains);
+        
         Date date1 = new Date();
         SimpleDateFormat timeFormat1 = new SimpleDateFormat("h:mm:ss");
         String time1 = timeFormat1.format(date1);
         System.out.println(time1);
         
         controller.addSeed("http://www.ics.uci.edu/");
-        controller.addSeed("http://www.lib.uci.edu/");
-        controller.addSeed("http://www.hnet.uci.edu/");
-        controller.addSeed("http://www.math.uci.edu/");
-        //controller.addSeed("http://www.ics.uci.edu/~welling/");
-        //controller.addSeed("http://www.ics.uci.edu/~lopes/");
-        //controller.addSeed("https://students.ics.uci.edu/~vutn1");
+        //controller.addSeed("http://www.lib.uci.edu/");
+        //controller.addSeed("http://www.hnet.uci.edu/");
+        //controller.addSeed("http://www.math.uci.edu/");
+        controller.addSeed("http://www.ics.uci.edu/~welling/");
+        controller.addSeed("http://www.ics.uci.edu/~lopes/");
+        controller.addSeed("https://students.ics.uci.edu/~vutn1");
         
 
         controller.start(Parser.class, numofCrawlers);
