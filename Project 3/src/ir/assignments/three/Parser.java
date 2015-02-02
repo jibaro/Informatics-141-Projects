@@ -34,14 +34,14 @@ public class Parser extends WebCrawler{
        
         // TODO: only check the domain not subdomain & need to optimize it
         
-        if(href.startsWith("http://www.ics.uci.edu/"))
+        if(href.contains(".ics.uci.edu"))
         {
         	// TODO: Use WordFrequencyCounter to see uniqueness
             siteFrequencies = WordFrequencyCounter.computeWordFrequencies(urlSite);
             
         }
-            //return !FILTERS.matcher(href).matches() && href.startsWith("http://www.ics.uci.edu/");
-        	return true;
+            return !FILTERS.matcher(href).matches() && href.contains(".ics.uci.edu");
+        	//return true;
     }
     @Override
     public void visit(Page page) {          
