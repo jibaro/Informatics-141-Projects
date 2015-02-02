@@ -40,7 +40,7 @@ public class Parser extends WebCrawler{
             siteFrequencies = WordFrequencyCounter.computeWordFrequencies(urlSite);
             
         }
-            return !FILTERS.matcher(href).matches() && href.contains(".ics.uci.edu");
+            return href.contains(".ics.uci.edu");
         	//return true;
     }
     @Override
@@ -67,24 +67,22 @@ public class Parser extends WebCrawler{
                     HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
                     
                     String text = htmlParseData.getText();
-                    String filename = "ParseData_"+ htmlParseData.getTitle() +".txt";
-                    try {
-                    	
-						PrintWriter out = new PrintWriter(filename);
-						out.println(text);
-						out.close();
-
-						
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+                    text = text.replaceAll("^[a-aA-Z0-9_]+$", " " ).toLowerCase();
+                    String[] tokens = text.split("\\s+");
                     
-					File file = new File(filename);
-					List<String> words = Utilities.tokenizeFile(file);
-					List<Frequency> frequencies = WordFrequencyCounter.computeWordFrequencies(words);
-					Utilities.printFrequencies(frequencies);
-			
+                    for(String word : tokens){
+                        if(Crawler.Words.containsKey(word)){
+                        	int counter = Crawler.Words.get(word);
+                        	counter += 1;
+                        	
+                        }
+                        else{
+                        	Crawler.Words.put(word,1);
+                        }
+                    }
+
+                    
+                    
                     String html = htmlParseData.getHtml();
                    
 

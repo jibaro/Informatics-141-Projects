@@ -2,7 +2,7 @@
 //81962579
 //Assignment 2 ICS 121 
 package ir.assignments.three;
-//few
+
 public final class Frequency {
 	private final String word;
 	private int frequency;

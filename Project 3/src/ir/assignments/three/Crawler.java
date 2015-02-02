@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 import com.sleepycat.je.txn.LockerFactory;
@@ -31,6 +33,7 @@ public class Crawler {
 	public static final String GroupName = "UCI Inf141-CS121 crawler StudentID 81962579 25475733";
 
 	public static HashMap<String,ArrayList<String>> Subdomain = new HashMap<String, ArrayList<String>>();
+	public static HashMap<String,Integer> Words = new HashMap<String,Integer>(); 
 	public static int Biggest_Page = 0;
 	public static String Biggest_Page_URL;
 	public static void main(String[] args) throws Exception{
@@ -47,7 +50,7 @@ public class Crawler {
 		config.setCrawlStorageFolder(crawlStorageFolder);
 	    config.setPolitenessDelay(300);
 	    config.setMaxDepthOfCrawling(2);
-	    config.setMaxPagesToFetch(300);
+	    config.setMaxPagesToFetch(30);
 	    config.setIncludeBinaryContentInCrawling(false);
 	    config.setResumableCrawling(false);
 	    
@@ -104,6 +107,25 @@ public class Crawler {
             	out.println(text);
             }
 			
+			
+			out.close();
+
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        String filename1 = "Words.txt";
+        try {
+        	
+			PrintWriter out = new PrintWriter(filename1);
+			Iterator it = Words.entrySet().iterator();
+			while(it.hasNext()){
+				Map.Entry<String, Integer> pairs = (Map.Entry)it.next();
+				out.println(pairs.getKey() + " , occurance : "+pairs.getValue());
+				
+			}
 			
 			out.close();
 
