@@ -65,10 +65,8 @@ public class Utilities {
 		
 
 	}
-	@SuppressWarnings("resource")
-	public static ArrayList<String> tokenizeFile(File input){
+	public static ArrayList<String> tokenizeFile(String string){
 		//Prepare to read 
-		BufferedReader br;
 		ArrayList<String> Tokens = new ArrayList<String>();
 		ArrayList<Character> Delimiters = new ArrayList<Character>();
 		for(int i = 48; i < 58 ; i++){
@@ -80,44 +78,32 @@ public class Utilities {
 		for(int i = 97; i < 122 ; i++){
 			Delimiters.add((char) i);
 		}
-		try {
-			br = new BufferedReader(new FileReader(input));
-			String line;
-			try {
-				while((line = br.readLine()) != null){
-					//Create new Token list of characters that gets created every time a delimiter is come across
-					ArrayList<Character> token = new ArrayList<Character>();
-					// Go through each Character
-					for(int i = 0; i < line.length(); i++){
-						//check if the char matches a delimiter
-						// if so send to Char_to_String to make a string out of a list of characters
-						// Make a new Token to start over
-						if(! Delimiters.contains(line.charAt(i))){
-							Char_to_String(token,Tokens);
-							token = new ArrayList<Character>();
-							
-						}
-						else{
-							//Add Char to token to the list
-							token.add(line.charAt(i));
-							
-							if(i+1 == line.length()){
-								
-								Char_to_String(token,Tokens);
-							}
-						}
-					}
-					
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+		//Create new Token list of characters that gets created every time a delimiter is come across
+		ArrayList<Character> token = new ArrayList<Character>();
+		// Go through each Character
+		for(int i = 0; i < string.length(); i++){
+			//check if the char matches a delimiter
+			// if so send to Char_to_String to make a string out of a list of characters
+			// Make a new Token to start over
+			if(! Delimiters.contains(string.charAt(i))){
+				Char_to_String(token,Tokens);
+				token = new ArrayList<Character>();
+				
 			}
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			else{
+				//Add Char to token to the list
+				token.add(string.charAt(i));
+				
+				if(i+1 == string.length()){
+					
+					Char_to_String(token,Tokens);
+				}
+			}
 		}
+					
+				
+
 
 		return Tokens;
 	}

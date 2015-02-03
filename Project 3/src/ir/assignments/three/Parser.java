@@ -40,7 +40,7 @@ public class Parser extends WebCrawler{
             siteFrequencies = WordFrequencyCounter.computeWordFrequencies(urlSite);
             
         }
-            return href.contains(".ics.uci.edu");
+            return !FILTERS.matcher(href).matches() && href.contains(".ics.uci.edu");
         	//return true;
     }
     @Override
@@ -49,13 +49,13 @@ public class Parser extends WebCrawler{
             String subdomain = page.getWebURL().getSubDomain();
 
             if(Crawler.Subdomain.containsKey(subdomain)){
-            	ArrayList<String> list = Crawler.Subdomain.get(subdomain);
-            	list.add(url);
+            	int counter = Crawler.Subdomain.get(subdomain);
+            	counter +=1;
+            	Crawler.Subdomain.put(subdomain, counter);
             }
             else{
-            	ArrayList<String> list = new ArrayList<String>();
-            	list.add(url);
-            	Crawler.Subdomain.put(subdomain, list);
+            	
+            	Crawler.Subdomain.put(subdomain, 1);
             }
             
             
@@ -67,13 +67,15 @@ public class Parser extends WebCrawler{
                     HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
                     
                     String text = htmlParseData.getText();
-                    text = text.replaceAll("^[a-aA-Z0-9_]+$", " " ).toLowerCase();
-                    String[] tokens = text.split("\\s+");
+                    
+                    ArrayList<String> tokens = Utilities.tokenizeFile(text);
                     
                     for(String word : tokens){
                         if(Crawler.Words.containsKey(word)){
                         	int counter = Crawler.Words.get(word);
                         	counter += 1;
+                        	Crawler.Words.put(word,counter);
+                        	
                         	
                         }
                         else{

@@ -32,7 +32,7 @@ public class Crawler {
 
 	public static final String GroupName = "UCI Inf141-CS121 crawler StudentID 81962579 25475733";
 
-	public static HashMap<String,ArrayList<String>> Subdomain = new HashMap<String, ArrayList<String>>();
+	public static HashMap<String,Integer> Subdomain = new HashMap<String, Integer>();
 	public static HashMap<String,Integer> Words = new HashMap<String,Integer>(); 
 	public static int Biggest_Page = 0;
 	public static String Biggest_Page_URL;
@@ -49,8 +49,8 @@ public class Crawler {
 		
 		config.setCrawlStorageFolder(crawlStorageFolder);
 	    config.setPolitenessDelay(300);
-	    config.setMaxDepthOfCrawling(2);
-	    config.setMaxPagesToFetch(30);
+	    config.setMaxDepthOfCrawling(15);
+	    config.setMaxPagesToFetch(300);
 	    config.setIncludeBinaryContentInCrawling(false);
 	    config.setResumableCrawling(false);
 	    
@@ -73,7 +73,7 @@ public class Crawler {
         //controller.addSeed("http://www.lib.uci.edu/");
         //controller.addSeed("http://www.hnet.uci.edu/");
         //controller.addSeed("http://www.math.uci.edu/");
-        controller.addSeed("http://www.ics.uci.edu/~welling/");
+        controller.addSeed("http://www.calendar.ics.uci.edu/");
         controller.addSeed("http://www.ics.uci.edu/~lopes/");
         controller.addSeed("https://students.ics.uci.edu/~vutn1");
         
@@ -86,8 +86,10 @@ public class Crawler {
         System.out.println(time2);
         
 
-        SortedMap<String,ArrayList<String>> sorted = new TreeMap<String,ArrayList<String>>(Subdomain);
-        
+        SortedMap<String,Integer> sorted = new TreeMap<String,Integer>(Subdomain);
+        ValueComparator bvc = new ValueComparator(Words);
+        TreeMap<String,Integer> sorted_words = new TreeMap<String,Integer>(bvc);
+        sorted_words.putAll(Words);
         
         // The times are in millisecond, so to convert it. To get seconds, divide it by 1000
         long difference = (date2.getTime() - date1.getTime()) / 1000;
@@ -99,11 +101,11 @@ public class Crawler {
         try {
         	PrintWriter out = new PrintWriter(filename);
         	out.println("Number of Subdomains : " + Subdomain.size());
-            for(Map.Entry<String, ArrayList<String>> entry : sorted.entrySet()){
-            	List<Frequency> freq = WordFrequencyCounter.computeWordFrequencies(entry.getValue());
-            	List<String> unique = WordFrequencyCounter.UniqueStrings(freq);
+            for(Map.Entry<String, Integer> entry : sorted.entrySet()){
+            	
+            	
             	//System.out.print(unique);
-            	String text = entry.getKey() + " , "+ unique.size() ;
+            	String text = entry.getKey() + " , "+ entry.getValue() ;
             	out.println(text);
             }
 			
@@ -120,7 +122,8 @@ public class Crawler {
         try {
         	
 			PrintWriter out = new PrintWriter(filename1);
-			Iterator it = Words.entrySet().iterator();
+			Iterator it = sorted_words.entrySet().iterator();
+			//Iterator it = Words.entrySet().iterator();
 			while(it.hasNext()){
 				Map.Entry<String, Integer> pairs = (Map.Entry)it.next();
 				out.println(pairs.getKey() + " , occurance : "+pairs.getValue());
@@ -139,5 +142,19 @@ public class Crawler {
 
 	}
 
-	
+
+}
+class ValueComparator implements Comparator<String>{
+	Map<String,Integer> base;
+	public ValueComparator(Map<String,Integer> base){
+		this.base = base;
+	}
+	public int compare(String a, String b){
+		if(base.get(a) >= base.get(b)){
+			return -1;
+		}
+		else{
+			return 1;
+		}
+	}
 }
