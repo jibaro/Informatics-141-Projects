@@ -1,7 +1,7 @@
 //Fernando de Paz
 //81962579
 //Assignment 2 ICS 121 
-package ir.assignments.three;
+package ir.assignments.helper;
 
 import java.io.*;
 import java.util.ArrayList;

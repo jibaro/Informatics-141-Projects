@@ -1,9 +1,13 @@
 package ir.assignments.three;
 
+import ir.assignments.helper.Frequency;
+import ir.assignments.helper.Utilities;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -18,29 +22,55 @@ public class Parser extends WebCrawler{
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g" 
             + "|png|tiff?|mid|mp2|mp3|mp4"
             + "|wav|avi|mov|mpeg|ram|m4v|pdf" 
-            + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
+            + "|rm|smil|wmv|swf|wma|zip|rar|gz|cpp|c|))$");
     
     
     public ArrayList<String> urlSite = new ArrayList<String>();
-    List<Frequency> siteFrequencies;
-    int count=0;
+    
     
     @Override
     public boolean shouldVisit(WebURL url) {
         String href = url.getURL().toLowerCase();
         
         // TODO: add each url to list & .add() append the element return true;
-        urlSite.add(href);
-       
+        
+        if(href.contains("drzaius.ics.uci.edu")){
+        	Crawler.Subdomain.put("drzaius.ics", 1);
+        	return false;
+        }
+        if(href.contains("calendar.ics.uci.edu")){
+        	Crawler.Subdomain.put("calendar.ics", 1);
+        	return false;
+        }
+        if(href.contains("archive.ics.uci.edu")){
+        	Crawler.Subdomain.put("archive.ics", 1);
+        	return false;
+        }
+        if(href.contains("wics.ics.uci.edu")){
+        	Crawler.Subdomain.put("wics.ics", 1);
+        	return false;
+        }
+        if(href.contains("fano.ics.uci.edu")){
+        	Crawler.Subdomain.put("flamingo.ics", 1);
+        	return false;
+        }
+        if(href.contains("flamingo.ics.uci.edu")){
+        	Crawler.Subdomain.put("flamingo.ics", 1);
+        	return false;
+        }
         // TODO: only check the domain not subdomain & need to optimize it
         
-        if(href.contains(".ics.uci.edu"))
+        if(!FILTERS.matcher(href).matches() && href.contains(".ics.uci.edu"))
         {
+        	
+        	//urlSite.add(href);
         	// TODO: Use WordFrequencyCounter to see uniqueness
-            siteFrequencies = WordFrequencyCounter.computeWordFrequencies(urlSite);
+            //Crawler.siteFrequencies = WordFrequencyCounter.computeWordFrequencies(href,Crawler.siteFrequencies);
             
+            return true;
         }
-            return !FILTERS.matcher(href).matches() && href.contains(".ics.uci.edu");
+        return false;
+            //return !FILTERS.matcher(href).matches() && href.contains(".ics.uci.edu");
         	//return true;
     }
     @Override
@@ -59,9 +89,14 @@ public class Parser extends WebCrawler{
             }
             
             
+            Frequency freq = new Frequency(url);
+            freq.incrementFrequency();
+            Crawler.siteFrequencies.add(freq);
             
             
-            System.out.println("URL: " + url);
+            System.out.println("This is: " + url + " count: " + Crawler.count);
+            
+            //System.out.println("URL: " + url);
 
             if (page.getParseData() instanceof HtmlParseData) {
                     HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
@@ -89,22 +124,23 @@ public class Parser extends WebCrawler{
                    
 
                     List<WebURL> links = htmlParseData.getOutgoingUrls();
-                    System.out.println("The size of this array: " + siteFrequencies.size());
-                    for(int i=0; i<siteFrequencies.size(); i++)
-                    {
-                    	if(siteFrequencies.get(i).getFrequency() <= 1)
-                    	{
-                    		count++;
-                    	}
-                    	
-                    }
+
                     if(Crawler.Biggest_Page < text.length()){
                     	Crawler.Biggest_Page = text.length();
                     	Crawler.Biggest_Page_URL = url;
                     }
-                    System.out.println("Text length: " + text.length());
-                    System.out.println("Html length: " + html.length());
-                    System.out.println("Number of outgoing links: " + links.size());
+                    
+                    Date date2 = new Date();
+                    long difference = (date2.getTime() - Crawler.date1.getTime()) / 1000;
+                    System.out.println("Total time so far in seconds: " + difference);
+                    
+                    
+                    
+                    //System.out.println("Text length: " + text.length());
+                    //System.out.println("Html length: " + html.length());
+                    //System.out.println("Number of outgoing links: " + links.size());
+                    
+                    System.out.println("---------------------------------------------------------");
             }
     }
 }

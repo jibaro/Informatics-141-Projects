@@ -1,10 +1,10 @@
 //Fernando de Paz
 //81962579
 //Assignment 2 ICS 121 
-package ir.assignments.three;
+package ir.assignments.helper;
 
-import ir.assignments.three.Frequency;
-import ir.assignments.three.Utilities;
+import ir.assignments.helper.Frequency;
+import ir.assignments.helper.Utilities;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,14 +25,13 @@ public final class WordFrequencyCounter {
 		Collections.sort(Uniques);
 		return Uniques;
 	}
-	public static List<Frequency> computeWordFrequencies(List<String> words) {
+	public static List<Frequency> computeWordFrequencies(String Url,List<Frequency> frequency) {
 
-		List<Frequency> frequency = new ArrayList<Frequency>();
 		//Go through tokens and check if they exist, if it does update counter
-		for (String token : words){
+		
 			boolean exists = false;
 			for(Frequency word: frequency){
-				if(token.equals(word.getText())){
+				if(Url.equals(word.getText())){
 					word.incrementFrequency();
 					exists = true;
 					break;
@@ -40,11 +39,11 @@ public final class WordFrequencyCounter {
 			}
 			//if they don't exist create newword of type Frequency and add it to frequency list
 			if(exists == false){
-				Frequency newword = new Frequency(token,1);
+				Frequency newword = new Frequency(Url,1);
 				frequency.add(newword);
 			}
 			
-		}
+		
 		return frequency;
 	}
 	
