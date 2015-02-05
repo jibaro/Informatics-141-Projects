@@ -1,3 +1,5 @@
+//Chia Huang 25475733
+//Fernando De Paz 81962579
 package ir.assignments.three;
 
 import ir.assignments.helper.Frequency;
@@ -46,8 +48,8 @@ public class Crawler{
 	public static HashMap<String,Integer> Words = new HashMap<String,Integer>(); 
 	public static List<Frequency> siteFrequencies = new ArrayList<Frequency>();
 	
-	public static int count = 0;
 	
+	public static int siteCount = 0;
 	
 	public static Date date1 = new Date();
 	
@@ -103,10 +105,7 @@ public class Crawler{
         System.out.println(time2);
         
 
-        SortedMap<String,Integer> sorted = new TreeMap<String,Integer>(Subdomain);
-        ValueComparator bvc = new ValueComparator(Words);
-        TreeMap<String,Integer> sorted_words = new TreeMap<String,Integer>(bvc);
-        sorted_words.putAll(Words);
+
         
         // The times are in millisecond, so to convert it. To get seconds, divide it by 1000
         long difference = (date2.getTime() - date1.getTime()) / 1000;
@@ -115,86 +114,9 @@ public class Crawler{
        
         
        
-        String filename = "Subdomains.txt";
-        try {
-        	PrintWriter out = new PrintWriter(filename);
-        	out.println("Number of Subdomains : " + Subdomain.size());
-            for(Map.Entry<String, Integer> entry : sorted.entrySet()){
-            	
-            	
-            	//System.out.print(unique);
-            	String text = entry.getKey() + " , "+ entry.getValue() ;
-            	out.println(text);
-            }
-			
-			
-			out.close();
-
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        String filename1 = "Words.txt";
-        try {
-        	
-			PrintWriter out = new PrintWriter(filename1);
-			Iterator it = sorted_words.entrySet().iterator();
-			//Iterator it = Words.entrySet().iterator();
-			while(it.hasNext()){
-				Map.Entry<String, Integer> pairs = (Map.Entry)it.next();
-				
-				if(!Stop_Word.contains(pairs.getKey())){
-					out.println(pairs.getKey() + " , occurance : "+pairs.getValue());
-				}
-			}
-			
-			out.close();
-
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        String filename2 = "SiteFrequencies.txt";
-        try {
-        	
-			PrintWriter out = new PrintWriter(filename2);
-			for(Frequency url: siteFrequencies){
-				if(url.getFrequency() <= 1)
-				{
-					out.println(url.getText() + " : " + url.getFrequency() );
-					count++;
-				}
-			}
-			out.println("The number of unique pages : " + count + ". Size of list is: "+ siteFrequencies.size());
-			out.close();
-
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        System.out.println("Longest Page: "+Biggest_Page_URL + " , has : "+Biggest_Page+" words");
 
 	}
-
 
 }
-class ValueComparator implements Comparator<String>{
-	Map<String,Integer> base;
-	public ValueComparator(Map<String,Integer> base){
-		this.base = base;
-	}
-	public int compare(String a, String b){
-		if(base.get(a) >= base.get(b)){
-			return -1;
-		}
-		else{
-			return 1;
-		}
-	}
-}
+
 

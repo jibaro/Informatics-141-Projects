@@ -1,5 +1,5 @@
-//Fernando de Paz
-//81962579
+//Chia Huang 25475733
+//Fernando De Paz 81962579
 //Assignment 2 ICS 121 
 package ir.assignments.helper;
 
