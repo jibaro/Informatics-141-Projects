@@ -1,0 +1,27 @@
+﻿#Answer.txt
+Chia Huang 25475733
+Fernando De Paz 81962579
+
+
+*** All these estimates are due to not being able to retrieve information from the crawler threads because
+once the program is terminated, the data is permanently lost. ***
+
+Question 1:
+
+We ran the program an estimate of 5 hours. 
+We ran some test and fell through some traps and were not able to full crawl through the domain due to the time to crawl,
+through the domain. 
+Our estimate time of crawling is 10 hours because we crawl through 35 thousand pages and there is an estimated 70 thousand in ics.uci.edu domains.
+
+
+Question 2:
+
+We got an estimated of 27,000 pages in five hours.
+
+
+Question 4:
+
+The longest page is: 
+www.ics.uci.edu/~arajpuro/
+
+and has 248,813 words

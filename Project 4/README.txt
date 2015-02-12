@@ -1,0 +1,1 @@
+The folder doesn't contain anything. When you copy the program to your hdd put where the actual enron folder is. Enron folder is too big to upload.
