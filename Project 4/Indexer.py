@@ -1,4 +1,7 @@
 import os
+import re
+import Porter_Stem
+
 STOP_WORDS = ["a","about","above","after","again","against","all","am","an","and","any","are","aren't","as","at","be","because","been","before","being","below","between","both","but","by","can't","cannot","could","couldn't",
 "did","didn't","do","does","doesn't","doing","don't","down","during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't","having","he","he'd","he'll","he's","her","here","here's",
 "hers","herself","him","himself","his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's","its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off",
@@ -6,30 +9,107 @@ STOP_WORDS = ["a","about","above","after","again","against","all","am","an","and
 "shouldn't","so","some","such","than","that","that's","the","their","theirs","them","themselves","then","there","there's","these","they","they'd","they'll","they're","they've","this",
 "those","through","to","too","under","until","up","very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's","when","when's","where","where's","which","while",
 "who","who's","whom","why","why's","with","won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself","yourselves"]
+class Frequency:
+    
+    
+    def __init__(self,word,root):
+        self.word = word
+        self.root = {}
+        
+    def __str__(self):
+        string = ""
+        string += self.word + "\t"
+        keylist2 = list(self.root.keys())
+        keylist2.sort()
+        for location in keylist2:
+            string += location + " " + str(len(self.root[location]))+" : ["
+            for thing in self.root[location]:
+                string += str(thing) + ", "
+            string+="]\n\t\t"
+        return string
+
+    def add_count(self, path, position):
+        if(path in self.root):
+            info = self.root[path]
+            info.append(position)
+            self.root[path] = info
+        else:
+            info = [position]
+            self.root[path] = info
+    
+def Frequency_Counter(Words,parsed_words,root):
+    count = 0
+    
+    for word in parsed_words:
+        word = Porter_Stem.STEM(word)
+        
+        if(not word in STOP_WORDS):
+            
+            if(len(word) > 1):
+                if(word in Words):
+                    
+                    tempword = Words[word]
+                    
+                    tempword.add_count(root,count)
+                    Words[word] = tempword
+                else:
+                    f =  Frequency(word,root)
+                    f.add_count(root,count)
+                    Words[word] = f
+                    
+                count +=1
+
+    
 def Parser(raw_file):
 
     start = False
     Content = ""
     for line in raw_file:
+
         if(start):
-            
-            Content += line.rstrip()
-        if("X-FileName" in line):
+            if(":" in line):
+                line= line[line.index(":")+1:]
+            line = re.sub('[-/)(\n\t\\\*=&,".<>;?!~]', " ",line)
+            Content += line
+        if("ID: " in line):
+           
             start = True
             
     Words = Content.split(" ")
+    return list(filter(None,Words))
     
-    print(Words)
+
 def main():
     Words = {}
+
     for root, dirs, files in os.walk("."):
         path = root.split('\\')
+        if (len(path) == 4):
+            print(path)
         if(len(path) > 4):
             for i in range(len(files)):
                 
                 f = open(root+'\\'+files[i],'r')
-                Parser(f.readlines())
+                parsed_words = Parser(f.readlines())
+                s_Dir = ""
+                c=0
+                for sub in path:
+                    if(c >2):
+                        s_Dir += sub + "\\"
+                    c+=1
+
+                Frequency_Counter(Words,parsed_words,s_Dir+files[i]+".txt")
                 
                 f.close()
+    print("done")
+    g = open("words.txt",'w')
+    keylist = list(Words.keys())
+    keylist.sort()
+    
+    for key in keylist:
+        
+        
+        g.write(Words[key].__str__()+"\n")
+    g.close()
     
 main()
