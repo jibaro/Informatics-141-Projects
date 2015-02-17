@@ -63,3 +63,7 @@ for person in data :
 
 print("*"*30)
 print("Done!")
+select * from words
+where word like 'conflict' or word like 'of' or word like 'interest'
+group by path
+order by word, location;

@@ -1,5 +1,6 @@
 import os
 import re
+import sqlite3
 import Porter_Stem
 
 STOP_WORDS = ["a","about","above","after","again","against","all","am","an","and","any","are","aren't","as","at","be","because","been","before","being","below","between","both","but","by","can't","cannot","could","couldn't",
@@ -9,6 +10,10 @@ STOP_WORDS = ["a","about","above","after","again","against","all","am","an","and
 "shouldn't","so","some","such","than","that","that's","the","their","theirs","them","themselves","then","there","there's","these","they","they'd","they'll","they're","they've","this",
 "those","through","to","too","under","until","up","very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's","when","when's","where","where's","which","while",
 "who","who's","whom","why","why's","with","won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself","yourselves"]
+
+
+
+
 class Frequency:
     
     
@@ -36,8 +41,81 @@ class Frequency:
         else:
             info = [position]
             self.root[path] = info
+
+
+def Write_Out(Words,conn):
+    cursor = conn.cursor()
+    keylist = list(Words.keys())
+    keylist.sort()
+    scripts = []
     
-def Frequency_Counter(Words,parsed_words,root):
+    for key in keylist:
+        word_key = key
+        olist = Words[key].root
+        
+        for key2 in olist:
+            path_key = key2 
+            nlist = list(olist[key2])
+            for locations in nlist:
+                if(locations != ""):
+                    location_value = locations
+                    
+                    scripts.append("INSERT INTO words VALUES('"+ word_key + "','"+path_key+"',"+str(location_value)+")")
+    cursor.execute("BEGIN")
+    for script in scripts:
+        cursor.execute(script)
+    try:
+        cursor.execute("COMMIT")
+    except:
+        print("")
+    conn.commit()
+    
+                    
+
+
+def Sort_Export(conn):
+
+    cursor = conn.cursor()
+
+
+    print("Writing")
+    f = open('output.txt','w')
+    word = ""
+    string = ""
+    location = ""
+    places = []
+    print("Printing Out")
+    print("Ordering")
+    for row in cursor.execute("SELECT * FROM words ORDER BY word, path"):
+
+        if(row[0] != word):
+            if(string == ""):
+                string = location +" " +str(len(places)) + " : ["
+                for place in places:
+                        string += str(place) 
+                string += "]\n\t\t"
+            f.write(word + "\t" + string + "\n\n")
+            
+            word = row[0]
+            location = row[1]
+            places = [row[2]]
+            string = ""
+            
+        else:
+            if(row[1] != location):
+                string += location +" " +str(len(places)) + " : ["
+                for place in places:
+                    string += str(place) + ", "
+                string += "]\n\t\t"
+                location = row[1]
+                places = [row[2]]
+            else:
+                places.append(row[2])
+                
+    f.close()
+    
+        
+def Frequency_Counter(Words, parsed_words,root):
     count = 0
     
     for word in parsed_words:
@@ -58,7 +136,8 @@ def Frequency_Counter(Words,parsed_words,root):
                     Words[word] = f
                     
                 count +=1
-
+    return Words
+    
     
 def Parser(raw_file):
 
@@ -69,7 +148,7 @@ def Parser(raw_file):
         if(start):
             if(":" in line):
                 line= line[line.index(":")+1:]
-            line = re.sub('[-/)(\n\t\\\*=&,".<>;?!~]', " ",line)
+            line = re.sub('[-/)(\n\t\\\*=&,".<>;?!~%+#$|_{}'+"'"+']', " ",line)
             Content += line
         if("ID: " in line):
            
@@ -79,15 +158,32 @@ def Parser(raw_file):
     return list(filter(None,Words))
     
 
-def main():
-    Words = {}
+def main(): 
+    print("start")
+    conn = sqlite3.connect("out_file_db.db")
 
+    cursor = conn.cursor()
+    cursor.execute("DROP TABLE IF EXISTS words")
+    cursor.execute("CREATE TABLE words (word TEXT, path TEXT,location INT)")
+    cursor.execute("PRAGMA synchronous = OFF")
+    conn.commit()
+    print("opened")
+            
+    Words = {}
     for root, dirs, files in os.walk("."):
+        count = 0
         path = root.split('\\')
         if (len(path) == 4):
-            print(path)
+            count +=1
+            
+            print(str(count)+" / " + "150 " + path[-1])
+            Write_Out(Words, conn)
+            Words = {}
+            
         if(len(path) > 4):
+            
             for i in range(len(files)):
+                #print("{:3f}".format(count/len(files) * 100))
                 
                 f = open(root+'\\'+files[i],'r')
                 parsed_words = Parser(f.readlines())
@@ -98,18 +194,18 @@ def main():
                         s_Dir += sub + "\\"
                     c+=1
 
-                Frequency_Counter(Words,parsed_words,s_Dir+files[i]+".txt")
+                Words = Frequency_Counter(Words, parsed_words,s_Dir+files[i]+".txt")
+                
                 
                 f.close()
+                count +=1
+    print("Done traversing")
+    print("Writing to SQL...")
+    Write_Out(Words,conn)
+
+    Sort_Export(conn)
+    conn.close()
     print("done")
-    g = open("words.txt",'w')
-    keylist = list(Words.keys())
-    keylist.sort()
-    
-    for key in keylist:
-        
-        
-        g.write(Words[key].__str__()+"\n")
-    g.close()
+
     
 main()
