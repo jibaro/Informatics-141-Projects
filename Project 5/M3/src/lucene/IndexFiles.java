@@ -20,9 +20,11 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.FieldInfo;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -154,18 +156,18 @@ public class IndexFiles {
 			  String filename = file.getName();
 			  String Parent = file.getParent();
 
-	    	  if(filename.endsWith("ZIP")){
-	    		  
-	    		  UnZip zipper = new UnZip();
-	    		  zipper.UnZipit(filename,Parent);
-	    		  String newtxt = filename.substring(0,filename.indexOf(".")) + ".txt";
-	    		  newtxt = newtxt.replace('_', '-');
-	    		  File nfile = new File(Parent+File.separator+newtxt);
-	    		  
-	    		  index(writer,nfile);
-	    		  
-	        		
-	    	  }
+//	    	  if(filename.endsWith("ZIP")){
+//	    		  
+//	    		  UnZip zipper = new UnZip();
+//	    		  zipper.UnZipit(filename,Parent);
+//	    		  String newtxt = filename.substring(0,filename.indexOf(".")) + ".txt";
+//	    		  newtxt = newtxt.replace('_', '-');
+//	    		  File nfile = new File(Parent+File.separator+newtxt);
+//	    		  
+//	    		  index(writer,nfile);
+//	    		  
+//	        		
+//	    	  }
 	    	 
 	    	  if(file.getAbsolutePath().endsWith("txt")){
 	    		  index(writer,file);
@@ -186,7 +188,7 @@ public class IndexFiles {
 		  if(line.contains("START"))
 			  Start = true;
 		  if (Start){
-			  String partial = Parts[5] + line;
+			  String partial = Parts[5] + line+" ";
 			  Parts[5] = partial;
 		  }
 		  if(line.contains("Title"))
@@ -205,7 +207,8 @@ public class IndexFiles {
 	  
 	  return Parts;
   }
-  static void index(IndexWriter writer,File file) throws IOException{
+  @SuppressWarnings("deprecation")
+static void index(IndexWriter writer,File file) throws IOException{
 	  String[] info = Parser(file);
 	  String Title = info[0], Author = info[1], Date = info[2], Language = info[3],Encoding = info[4], text = info[5];
 	  FileInputStream fis;
@@ -250,8 +253,16 @@ public class IndexFiles {
           // so that the text of the file is tokenized and indexed, but not stored.
           // Note that FileReader expects the file to be in UTF-8 encoding.
           // If that's not the case searching for special characters will fail.
+          FieldType type = new FieldType();
+          type.setIndexed(true);
+          type.setIndexOptions(FieldInfo.IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+          type.setStored(true);
+          type.setStoreTermVectors(true);
+          type.setTokenized(true);
+          type.setStoreTermVectorOffsets(true);
+          
+          doc.add(new Field("content",text , type));
 
-          doc.add(new TextField("content", text, Field.Store.NO));
 
           if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
             // New index, so we just add the document (no old document can be there):
