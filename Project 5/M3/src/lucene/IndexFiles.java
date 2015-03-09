@@ -46,6 +46,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
 
 /** Index all text files under a directory.
@@ -64,7 +65,7 @@ public class IndexFiles {
                  + "This indexes the documents in DOCS_PATH, creating a Lucene index"
                  + "in INDEX_PATH that can be searched with SearchFiles :-)";
     String indexPath = "index";
-    String docsPath = "./Test Directory";
+    String docsPath = "./GuttenBerg Project";
     boolean create = true;
 
 
@@ -139,7 +140,7 @@ public class IndexFiles {
   static void indexDocs(IndexWriter writer, File file)
     throws IOException {
     // do not try to index files that cannot be read
-	  if (file.canRead()) {
+	  if (file.canRead() && file.getName().startsWith("ETEXT")) {
 		  if (file.isDirectory()) {
 			  String[] files = file.list();
 		  
@@ -156,18 +157,21 @@ public class IndexFiles {
 			  String filename = file.getName();
 			  String Parent = file.getParent();
 
-//	    	  if(filename.endsWith("ZIP")){
-//	    		  
-//	    		  UnZip zipper = new UnZip();
-//	    		  zipper.UnZipit(filename,Parent);
-//	    		  String newtxt = filename.substring(0,filename.indexOf(".")) + ".txt";
-//	    		  newtxt = newtxt.replace('_', '-');
-//	    		  File nfile = new File(Parent+File.separator+newtxt);
-//	    		  
-//	    		  index(writer,nfile);
-//	    		  
-//	        		
-//	    	  }
+	    	  if(filename.endsWith("ZIP")){
+	    		  
+	    		  UnZip zipper = new UnZip();
+	    		  ArrayList<String> Names = zipper.UnZipit(filename,Parent);
+	    		  for(String name : Names){
+	    			  
+		    		  String newtxt = name.replace('_', '-');
+		    		  File nfile = new File(Parent+File.separator+newtxt);
+		    		  
+		    		  index(writer,nfile);
+	    		  }
+
+	    		  
+	        		
+	    	  }
 	    	 
 	    	  if(file.getAbsolutePath().endsWith("txt")){
 	    		  index(writer,file);
@@ -180,7 +184,6 @@ public class IndexFiles {
 	  String[] Parts = new String[6];
 	  Parts[5] = "";
 	  BufferedReader br = new BufferedReader(new FileReader(file));
-	  StringBuilder sb = new StringBuilder();
 	  String line = br.readLine();
 	  boolean Start = false;
 	  while(line != null){
@@ -204,10 +207,10 @@ public class IndexFiles {
 		  
 		  line = br.readLine();
 	  }
-	  
+	  br.close();
 	  return Parts;
   }
-  @SuppressWarnings("deprecation")
+
 static void index(IndexWriter writer,File file) throws IOException{
 	  String[] info = Parser(file);
 	  String Title = info[0], Author = info[1], Date = info[2], Language = info[3],Encoding = info[4], text = info[5];
